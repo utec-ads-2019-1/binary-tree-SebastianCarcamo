@@ -7,7 +7,7 @@ template <typename T>
 class Iterator {
     private:
         Node<T> *current;
-        stack<Node<T>*> myStack;
+        std::stack<Node<T>*> myStack;
 
     public:
         Iterator() {
@@ -18,17 +18,17 @@ class Iterator {
             current = node;
             if(SoE){
                 while(current->left){
-                    current.push(myStack);
+                    current.push(this->myStack);
                     current = current->left;
                 }
             }
             else{
                 while(current->right){
-                    current.push(myStack);
+                    current.push(this->myStack);
                     current = current->right;
                 }
             }
-        }
+        };
 
         Iterator<T> operator=(Iterator<T> other) {          
             current = other.current;

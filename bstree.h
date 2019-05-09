@@ -3,6 +3,7 @@
 
 #include "node.h"
 #include "iterator.h"
+#include <stack>
 
 template <typename T> 
 class BSTree {
@@ -24,11 +25,9 @@ class BSTree {
                 if(data == aux->data){
                     return true;
                 }
-                }else{
-                    return false;
-                }
+                else{return false;}
             }
-        } 
+        }
 
         bool insert(T data) {
             
@@ -54,48 +53,70 @@ class BSTree {
                 }
 
         }
+    }
 
 
-        bool remove_recursive(Node* node, T data){
-            if(data<node->data){
-                remove_recursive(node->left,data);
+        Node<T>* get_min(Node<T>* node){
+            while(node->left != nullptr){
+                node = node->left;
             }
-            else if(data>node->data){
-                remove_recursive(node->right,data);
+            return node;
+        }
+
+        Node<T>* remove_get_node(Node<T>* node, T data){
+            if(node == nullptr){
+                return node;
+            }
+
+            if(data>node->data){
+                node->left = remove_get_node(node->left,data);
+            }
+            else if(data<node->data){
+                node->right = remove_get_node(node->right,data);
             }
             else{
-                //casos de numero de hijos del nodo
-                if(node->left == nullptr){//tiene un hijo o ninguno
+                if(root->left == nullptr){
                     Node<T>* temp = node->right;
-                    delete(node);
-                    return true;
+                    delete node;
+                    return temp;
                 }
-                if(node->right == nullptr){
+                else if(root->right == nullptr){
                     Node<T>* temp = node->left;
-                    delete(node);
-                    return true;
+                    delete node;
                 }
 
-
+                Node<T>* temp = get_min(node);
+                node->data = temp->data;
+                node->right = remove_get_node(node->right,temp->data);
             }
+                return node;
+        }
+
+        bool remove_recursive(Node<T>* node, T data){
+            if(data < node->data){
+                node->left = remove_get_node(node->left,data);
+                return true;
+            }
+            else if(data > node->data){
+                node->right = remove_get_node(node->right,data);
+            }
+            node = remove_get_node(node,data);
         }
 
         bool remove(T data) {
             if(this->root == nullptr){
                 return false;
             }
-            
-
-
+            return remove_recursive(this->root,data);
         }
 
 
-        unsigned int size_recursive(Node* node)
+        unsigned int size_recursive(Node<T>* node){
             if(this->node == nullptr){
                 return 0;
             }else
             return size_recursive(this->node->left) + size_recursive(this->node->right) +1;
-
+        }
         unsigned int size() {
             if (this->root == nullptr){
                 return 0;
@@ -104,38 +125,38 @@ class BSTree {
         }
 
 
-        void traversePreOrder_recursive(Node* node){
+        void traversePreOrder_recursive(Node<T>* node){
             if (node == nullptr){
                 return;
             }
-            cout<< node->data<<" ";
+            std::cout<< node->data<<" ";
             traversePreOrder_recursive(node->left);
             traversePreOrder_recursive(node->right);
         }
 
-        void traverseInOrder_recursive(Node* node){
+        void traverseInOrder_recursive(Node<T>* node){
             if (node == nullptr){
                 return;
             }
             traverseInOrder_recursive(node->right);
-            cout<< node->data<<" ";
+            std::cout<< node->data<<" ";
             traverseInOrder_recursive(node->left);
         }
 
-        void traversePostOrder_recursive(Node* node){
+        void traversePostOrder_recursive(Node<T>* node){
             if (node == nullptr){
                 return;
             }
             traversePostOrder_recursive(node->right);
             traversePostOrder_recursive(node->left);
-            cout<< node->data<<" ";
+            std::cout<< node->data<<" ";
         }
 
         void traversePreOrder() {
             if (this->root == nullptr){
                 return;
             }
-            cout<< this->root->data<<" ";
+            std::cout<< this->root->data<<" ";
             traversePreOrder_recursive(this->root->right);
             traversePreOrder_recursive(this->root->left);
         }
@@ -145,7 +166,7 @@ class BSTree {
                 return;
             }
             traverseInOrder_recursive(this->root->right);
-            cout<< this->root->data<<" ";
+            std::cout<< this->root->data<<" ";
             traverseInOrder_recursive(this->root->left);
         }
 
@@ -155,7 +176,7 @@ class BSTree {
             }
             traversePostOrder_recursive(this->root->right);
             traversePostOrder_recursive(this->root->left);
-            cout<< this->root->data<<" ";
+            std::cout<< this->root->data<<" ";
         }
 
         Iterator<T> begin() {
