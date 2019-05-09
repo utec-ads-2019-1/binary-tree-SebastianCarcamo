@@ -13,31 +13,119 @@ class BSTree {
         BSTree() : root(nullptr) {};
 
         bool find(T data) { 
-            // TODO
+            Node<T>* aux = this->root;
+            while(aux != nullptr){
+                if(data > aux->data){
+                    aux = aux->right;
+                }
+                if(data < aux->data){
+                    aux = aux->left;
+                }
+                if(data == aux->data){
+                    return true;
+                }
+                }else{
+                    return false;
+                }
+            }
         } 
 
         bool insert(T data) {
-            // TODO
+            
+            Node<T>* aux = this->root;
+            Node<T>* inserted = new Node<T>();
+            while(aux->left != nullptr || aux->right != nullptr){
+                if(data == aux->data){
+                    return false;
+                if(data < aux->data){
+                    aux = aux->left;
+                }
+                if(data > aux->data){
+                    aux = aux->right;
+                }
+            }
+                if(data < aux->data){
+                    inserted = aux->left;
+                    inserted->data = data;
+                }
+                if(data > aux->data){
+                    inserted = aux->right;
+                    inserted->data = data;
+                }
+
         }
 
         bool remove(T data) {
-            // TODO
+
         }
 
+
+        unsigned int size_recursive(Node* node)
+            if(this->node == nullptr){
+                return 0;
+            }else
+            return size_recursive(this->node->left) + size_recursive(this->node->right) +1;
+
         unsigned int size() {
-            // TODO
+            if (this->root == nullptr){
+                return 0;
+            }else
+            return size_recursive(this->root->left) + size_recursive(this->root->right) + 1;
+        }
+
+
+        void traversePreOrder_recursive(Node* node){
+            if (node == nullptr){
+                return;
+            }
+            cout<< node->data<<" ";
+            traversePreOrder_recursive(node->left);
+            traversePreOrder_recursive(node->right);
+        }
+
+        void traverseInOrder_recursive(Node* node){
+            if (node == nullptr){
+                return;
+            }
+            traverseInOrder_recursive(node->right);
+            cout<< node->data<<" ";
+            traverseInOrder_recursive(node->left);
+        }
+
+        void traversePostOrder_recursive(Node* node){
+            if (node == nullptr){
+                return;
+            }
+            traversePostOrder_recursive(node->right);
+            traversePostOrder_recursive(node->left);
+            cout<< node->data<<" ";
         }
 
         void traversePreOrder() {
-            // TODO
+            if (this->root == nullptr){
+                return;
+            }
+            cout<< this->root->data<<" ";
+            traversePreOrder_recursive(this->root->right);
+            traversePreOrder_recursive(this->root->left);
         }
 
         void traverseInOrder() {
-            // TODO
+            if (this->root == nullptr){
+                return;
+            }
+            traverseInOrder_recursive(this->root->right);
+            cout<< this->root->data<<" ";
+            traverseInOrder_recursive(this->root->left);
         }
 
         void traversePostOrder() {
-            // TODO
+            if (this->root == nullptr){
+                return;
+            }
+            traversePostOrder_recursive(this->root->right);
+            traversePostOrder_recursive(this->root->left);
+            cout<< this->root->data<<" ";
         }
 
         Iterator<T> begin() {
