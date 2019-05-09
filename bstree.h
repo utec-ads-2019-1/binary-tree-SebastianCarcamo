@@ -99,6 +99,7 @@ class BSTree {
             }
             else if(data > node->data){
                 node->right = remove_get_node(node->right,data);
+                return true;
             }
             node = remove_get_node(node,data);
         }
