@@ -55,7 +55,37 @@ class BSTree {
 
         }
 
+
+        bool remove_recursive(Node* node, T data){
+            if(data<node->data){
+                remove_recursive(node->left,data);
+            }
+            else if(data>node->data){
+                remove_recursive(node->right,data);
+            }
+            else{
+                //casos de numero de hijos del nodo
+                if(node->left == nullptr){//tiene un hijo o ninguno
+                    Node<T>* temp = node->right;
+                    delete(node);
+                    return true;
+                }
+                if(node->right == nullptr){
+                    Node<T>* temp = node->left;
+                    delete(node);
+                    return true;
+                }
+
+
+            }
+        }
+
         bool remove(T data) {
+            if(this->root == nullptr){
+                return false;
+            }
+            
+
 
         }
 
@@ -129,11 +159,11 @@ class BSTree {
         }
 
         Iterator<T> begin() {
-            // TODO
+            return Iterator(this->root,true);;
         }
 
         Iterator<T> end() { 
-            // TODO
+            return Iterator(this->root,false);
         }
 
         ~BSTree() {
