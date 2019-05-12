@@ -113,6 +113,7 @@ class BSTree {
 
 
         unsigned int size_recursive(Node<T>* node){
+            // node no es del árbol, es de la función
             if(this->node == nullptr){
                 return 0;
             }else
@@ -180,15 +181,21 @@ class BSTree {
             std::cout<< this->root->data<<" ";
         }
 
+
         Iterator<T> begin() {
-            return Iterator(this->root,true);;
+            // Falta el tipo del iterador
+            //return Iterator(this->root,true);;
+            return Iterator<T>(this->root,true); // Así debería ser
         }
 
         Iterator<T> end() { 
-            return Iterator(this->root,false);
+            // Falta el tipo del iterador
+            //return Iterator(this->root,false);
+            return Iterator<T>(this->root,false); // Así debería ser
         }
 
         ~BSTree() {
+            // Falta caso vacío
             // TODO
         }
 };

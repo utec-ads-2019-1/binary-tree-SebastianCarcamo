@@ -37,7 +37,9 @@ class Iterator {
         }
 
         bool operator!=(Iterator<T> other) {
-            return this->current!=other->current;
+            // other no es un puntero, esto no va a compilar
+            //return this->current!=other->current;
+            return this->current != other.current; // Así debería ser
         }
 
         Iterator<T> operator++() {
